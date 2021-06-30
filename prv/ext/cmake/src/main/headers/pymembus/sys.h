@@ -1,7 +1,7 @@
 
 #pragma once
 
-namespace LIBBLANK_NS
+namespace PYMEMBUS_NS
 {
 
     /** Install ctrl-c handler

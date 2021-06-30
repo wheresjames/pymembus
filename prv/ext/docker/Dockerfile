@@ -3,15 +3,15 @@
 # Examples
 #
 # Build
-# $ docker build -t libblank .
+# $ docker build -t pymembus .
 #
 # Run
-# $ docker run -it libblank
+# $ docker run -it pymembus
 #
 #====================================================================
 
-FROM ubuntu:20.04 AS libblank
-# FROM debian:10 AS libblank
+FROM ubuntu:20.04 AS pymembus
+# FROM debian:10 AS pymembus
 
 # Set timezone
 ARG TZ="Europe/Berlin"
@@ -38,12 +38,12 @@ RUN /code/docker.sh init
 # Build the library
 
 # Copy the code
-COPY . /code/libblank
-WORKDIR /code/libblank
+COPY . /code/pymembus
+WORKDIR /code/pymembus
 
 # Execute a build
 RUN \
-       cd /code/libblank \
+       cd /code/pymembus \
     && conan install . \
     && conan build . \
     && cmake --install ./bld

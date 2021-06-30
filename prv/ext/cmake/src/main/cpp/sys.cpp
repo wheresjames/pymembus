@@ -1,17 +1,17 @@
 
 #include <iostream>
 
-#include "libblank.h"
+#include "pymembus.h"
 
-#if defined(LIBBLANK_POSIX)
+#if defined(PYMEMBUS_POSIX)
 #   include <unistd.h>
 #   include <signal.h>
-#elif defined(LIBBLANK_WINDOWS)
+#elif defined(PYMEMBUS_WINDOWS)
 #   include <windows.h>
 #endif
 
 
-namespace LIBBLANK_NS
+namespace PYMEMBUS_NS
 {
 
 static volatile int *g_fCount = 0;
@@ -28,7 +28,7 @@ static void ctrl_c_handler(int /*s*/)
 
 
 //-------------------------------------------------------------------
-#if defined(LIBBLANK_POSIX)
+#if defined(PYMEMBUS_POSIX)
 
 void install_ctrl_c_handler(volatile int *fCount)
 {
@@ -45,7 +45,7 @@ void install_ctrl_c_handler(volatile int *fCount)
 
 
 //-------------------------------------------------------------------
-#elif defined(LIBBLANK_WINDOWS)
+#elif defined(PYMEMBUS_WINDOWS)
 
 BOOL WINAPI CtrlHandler(DWORD fdwCtrlType)
 {

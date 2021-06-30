@@ -6,23 +6,23 @@
 LINK="${ROOTDIR}/bld/html/index.html"
 
 if [ ! -f "$LINK" ]; then
-    LIBBLANKCMD=`which libblank`
-    if [ ! -z $LIBBLANKCMD ]; then
-        LINK="$(libblank info share)/dox/index.html"
+    PYMEMBUSCMD=`which pymembus`
+    if [ ! -z $PYMEMBUSCMD ]; then
+        LINK="$(pymembus info share)/dox/index.html"
     fi
 fi
 
 if [ ! -f "$LINK" ]; then
     UPONE=`dirname "${ROOTDIR}"`
-    LINK="${UPONE}/share/libblank/dox/index.html"
+    LINK="${UPONE}/share/pymembus/dox/index.html"
 fi
 
 if [ ! -f "$LINK" ]; then
-    LINK="/usr/share/libblank/dox/index.html"
+    LINK="/usr/share/pymembus/dox/index.html"
 fi
 
 if [ ! -f "$LINK" ]; then
-    LINK="/usr/local/share/libblank/dox/index.html"
+    LINK="/usr/local/share/pymembus/dox/index.html"
 fi
 
 # Did we find help?

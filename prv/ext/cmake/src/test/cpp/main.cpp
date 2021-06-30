@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <cstring>
 
-#include "libblank.h"
+#include "pymembus.h"
 
 //-------------------------------------------------------------------
 
@@ -52,7 +52,7 @@ int main(int /*argc*/, char * /*argv*/ [])
 {
     // Install ctrl-c handler
     static volatile int ctrl_c_count = 0;
-    lbk::install_ctrl_c_handler(&ctrl_c_count);
+    pmb::install_ctrl_c_handler(&ctrl_c_count);
 
     std::cout << " --- TEST FOR " APPNAME "\n";
     std::cout << " --- VERSION " APPVER " [" APPBUILD "]\n";

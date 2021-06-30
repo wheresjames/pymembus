@@ -35,7 +35,7 @@ def readConfig(fname):
     return cfg
 
 
-class Library_libblank(ConanFile):
+class Library_pymembus(ConanFile):
 
     # Read config file
     cfg = readConfig('PROJECT.txt')

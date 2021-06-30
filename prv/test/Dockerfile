@@ -1,15 +1,15 @@
 #====================================================================
 #
 # Build
-# $ docker build -t libblank-test -f ./prv/test/Dockerfile .
+# $ docker build -t pymembus-test -f ./prv/test/Dockerfile .
 #
 # Run
-# $ docker run -it libblank-test
+# $ docker run -it pymembus-test
 #
 #====================================================================
 
-FROM ubuntu:20.04 AS libblank
-# FROM debian:10 AS libblank
+FROM ubuntu:20.04 AS pymembus
+# FROM debian:10 AS pymembus
 
 # Set timezone
 ARG TZ="Europe/Berlin"
@@ -23,18 +23,18 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Install Build Dependencies
 RUN \
        apt-get -yq update \
-    && apt-get -yq install wget build-essential nano git cmake doxygen graphviz ronn
+    && apt-get -yq install wget build-essential nano git cmake doxygen graphviz go-md2man ronn
 
-# Install a web browser to view help file (libblank help)
+# Install a web browser to view help file (pymembus help)
 # RUN apt-get -yq install lynx
 
 
 #--------------------------------------------------------------------
 # Copy setup script
-COPY . /code/libblank
+COPY . /code/pymembus
 WORKDIR /code
 
-ENV DOCKERSCRIPT /code/libblank/prv/test/docker.sh
+ENV DOCKERSCRIPT /code/pymembus/prv/test/docker.sh
 
 #--------------------------------------------------------------------
 # Ensure we have a minimum cmake version
