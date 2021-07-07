@@ -20,16 +20,17 @@
 ### Windows
 
 - Install [CMake](https://cmake.org/download/)
-- Install [Visual Studio](https://visualstudio.microsoft.com/downloads/).
-  *The free **Community Edition** is fine*
+- Install [git](https://git-scm.com/downloads)
+- Install [boost](https://sourceforge.net/projects/boost/files/boost-binaries/)
+- Install [Visual Studio 2017](https://visualstudio.microsoft.com/downloads/). *The free **Community Edition** is fine*
 
 
 ### Linux
 
     $ sudo apt-get update
-    $ sudo apt-get -yq install build-essential git cmake doxygen graphviz go-md2man
+    $ sudo apt-get -yq install build-essential git cmake libboost-all-dev doxygen graphviz go-md2man
     $ sudo apt-get -yq install python3 python3-pip python11-dev
-    $ pip3 install scikit-build
+    $ python3 -m pip install scikit-build
 
 
 ### Build / Install
@@ -39,6 +40,11 @@
 OR
 
     $ pip3 install .
+
+
+### Uninstall
+
+    $ pip3 uninstall -y pymembus
 
 
 ### Create wheel
@@ -80,6 +86,8 @@ Library commands, for once you have it installed
 
 ---------------------------------------------------------------------
 ## Examples
+
+``` Python
 
     import pymembus
 
@@ -238,11 +246,16 @@ Library commands, for once you have it installed
     auds.close()
     auds2.close()
 
+```
+
 &nbsp;
 
 
 ---------------------------------------------------------------------
 ## References
+
+- Python
+    - https://www.python.org/
 
 - CMake
     - https://cmake.org
@@ -250,4 +263,22 @@ Library commands, for once you have it installed
 - pip
     - https://pip.pypa.io/en/stable/
 
+- git
+    - https://git-scm.com/
 
+- Boost
+    - https://www.boost.org/
+
+- Visual Studio
+    - https://visualstudio.microsoft.com/
+
+- Doxygen
+    - https://github.com/doxygen/doxygen
+
+- Graphviz
+    - https://graphviz.org/
+
+- Md2man
+    - https://sunaku.github.io/md2man/man/man5/md2man.5.html
+    - https://github.com/sunaku/md2man
+    

@@ -38,11 +38,6 @@ if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
     message(FATAL_ERROR "In-source builds not allowed, try cmake --build ./bld")
 endif()
 
-message(STATUS "CMAKE_SOURCE_DIR = ${CMAKE_SOURCE_DIR}")
-message(STATUS "CMAKE_BINARY_DIR = ${CMAKE_BINARY_DIR}")
-message(STATUS "CMAKE_CURRENT_SOURCE_DIR = ${CMAKE_CURRENT_SOURCE_DIR}")
-message(STATUS "CMAKE_CURRENT_BINARY_DIR = ${CMAKE_CURRENT_BINARY_DIR}")
-
 
 #====================================================================
 # Sub directories to build
@@ -62,7 +57,6 @@ endforeach()
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-# add_compile_options(-D_GLIBCXX_USE_CXX11_ABI=1)
 
 if(UNIX)
     set(BUILD_SHARED_LIBS ON)
@@ -108,16 +102,18 @@ endif()
 #====================================================================
 # Project info
 project("${APPNAME}" VERSION "${APPVER}" DESCRIPTION "${APPDESC}" HOMEPAGE_URL "${APPURL}")
-add_compile_options(-DAPPNAME="${PROJECT_NAME}")
-add_compile_options(-DAPPNAMERAW=${PROJECT_NAME})
-add_compile_options(-DAPPVER="${PROJECT_VERSION}")
-add_compile_options(-DAPPBUILD="${APPBUILD}")
-add_compile_options(-DAPPDESC="${APPDESC}")
-# add_compile_options(-DAPPCOMPANY="${APPCOMPANY}")
-# add_compile_options(-DAPPAUTHOR="${APPAUTHOR}")
-# add_compile_options(-DAPPEMAIL="${APPEMAIL}")
-# add_compile_options(-DAPPURL="${APPURL}")
-
+if(NOT IS_APPDEFS)
+    set(IS_APPDEFS YES)
+    add_compile_options(-DAPPNAME="${PROJECT_NAME}")
+    add_compile_options(-DAPPNAMERAW=${PROJECT_NAME})
+    add_compile_options(-DAPPVER="${PROJECT_VERSION}")
+    add_compile_options(-DAPPBUILD="${APPBUILD}")
+    add_compile_options(-DAPPDESC="${APPDESC}")
+    # add_compile_options(-DAPPCOMPANY="${APPCOMPANY}")
+    # add_compile_options(-DAPPAUTHOR="${APPAUTHOR}")
+    # add_compile_options(-DAPPEMAIL="${APPEMAIL}")
+    # add_compile_options(-DAPPURL="${APPURL}")
+endif()
 
 #====================================================================
 # Output paths
@@ -165,9 +161,23 @@ endfunction()
 
 #====================================================================
 # Info
-message(STATUS "---------------------------------------------------")
+message(STATUS "-------------------------------------------------------------------------")
 message(STATUS "${APPNAME} - ${APPVER} (${APPBUILD})")
-message(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
+message(STATUS "-------------------------------------------------------------------------")
+message(STATUS "CMAKE_INSTALL_PREFIX     : ${CMAKE_INSTALL_PREFIX}")
+message(STATUS "CMAKE_SOURCE_DIR         : ${CMAKE_SOURCE_DIR}")
+message(STATUS "CMAKE_BINARY_DIR         : ${CMAKE_BINARY_DIR}")
+message(STATUS "CMAKE_CURRENT_SOURCE_DIR : ${CMAKE_CURRENT_SOURCE_DIR}")
+message(STATUS "CMAKE_CURRENT_BINARY_DIR : ${CMAKE_CURRENT_BINARY_DIR}")
+
+execute_process(COMMAND git describe --tags --abbrev=0 OUTPUT_VARIABLE GIT_LASTTAG)
+string(STRIP ${GIT_LASTTAG} GIT_LASTTAG)
+if("v${APPVER}" STREQUAL "${GIT_LASTTAG}")
+    message(STATUS "######################## : git tag matches version: ${GIT_LASTTAG} == ${APPVER}")
+else()
+    message(AUTHOR_WARNING "######################### : git tag does not match version: ${GIT_LASTTAG} != ${APPVER}")
+endif()
+message(STATUS "-------------------------------------------------------------------------")
 
 
 #====================================================================
