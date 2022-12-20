@@ -5,7 +5,8 @@
 ---------------------------------------------------------------------
 ## Table of contents
 
-* [Quick Start](#quick-start)
+* [Install from pypi](#install-from-pypi)
+* [Local Build](#local-build)
 * [Administration](#administration)
 * [Examples](#examples)
 * [References](#references)
@@ -13,11 +14,20 @@
 &nbsp;
 
 
+---------------------------------------------------------------------
+## Install from pypi
+
+    Install dependencies (see below) then run...
+
+    $ pip install pymembus
+
+&nbsp;
+
 
 ---------------------------------------------------------------------
-## Quick Start
+## Local Build
 
-### Windows
+### Windows dependencies
 
 - Install [CMake](https://cmake.org/download/)
 - Install [git](https://git-scm.com/downloads)
@@ -25,11 +35,11 @@
 - Install [Visual Studio 2017](https://visualstudio.microsoft.com/downloads/). *The free **Community Edition** is fine*
 
 
-### Linux
+### Linux dependencies
 
     $ sudo apt-get update
     $ sudo apt-get -yq install build-essential git cmake libboost-all-dev doxygen graphviz go-md2man
-    $ sudo apt-get -yq install python3 python3-pip python11-dev
+    $ sudo apt-get -yq install python3 python3-pip python3-python11
     $ python3 -m pip install scikit-build
 
 
@@ -49,6 +59,10 @@ OR
 
 ### Create wheel
 
+    Software dist
+    $ python3 setup.py sdist
+
+    Binary dist
     $ python3 setup.py bdist_wheel
 
 OR
@@ -281,4 +295,3 @@ Library commands, for once you have it installed
 - Md2man
     - https://sunaku.github.io/md2man/man/man5/md2man.5.html
     - https://github.com/sunaku/md2man
-    

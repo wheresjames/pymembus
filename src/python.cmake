@@ -14,7 +14,7 @@ if(${PYVER} MATCHES "=")
     string(REPLACE "=" "" PYVER "${PYVER}")
     if(NOT "${PYVER}" STREQUAL "")
         set(PYEQ "EXACT")
-    endif()    
+    endif()
 endif()
 
 

@@ -26,14 +26,11 @@ installCMake()
     mkdir -p /code/cmake
     cd /code/cmake
 
-    wget https://github.com/Kitware/CMake/releases/download/v${CMAKEVER}/cmake-${CMAKEVER}.tar.gz
-    exitOnError "Failed to download cmake version $CMAKEVER"
+    git clone https://github.com/Kitware/CMake.git ./
+    exitOnError "Failed to clone cmake"
 
-    tar xvzf ./cmake-${CMAKEVER}.tar.gz
-    exitOnError "Failed to extract cmake version $CMAKEVER"
-
-    cd cmake-${CMAKEVER}
-    exitOnError "Failed to cd cmake version $CMAKEVER"
+    git checkout $CMAKEVER
+    exitOnError "Failed to checkout tag : $CMAKEVER"
 
     ./bootstrap
     exitOnError "Failed to bootstrap cmake version $CMAKEVER"
@@ -108,113 +105,6 @@ fi
 
 
 #--------------------------------------------------------------------------------------------------
-if [[ $1 == "test-conan" ]]; then
-
-    showBanner "Conan Test"
-
-    apt-get -yqq update
-    apt-get -yqq install python3 python3-pip
-    python3 -m pip install conan
-
-    cp -R /code/pymembus /code/pymembus-conan
-    exitOnError "test-conan: Failed to copy to directory : /code/pymembus-conan"
-
-    cd /code/pymembus-conan
-    exitOnError "test-conan: Failed to switch to directory : /code/pymembus-conan"
-
-    ./clean.sh
-
-    ./add.sh conan -y
-    exitOnError "test-conan: Failed to add conan to project"
-
-    conan install .
-    exitOnError "test-conan: Failed to configure"
-
-    conan build .
-    exitOnError "test-conan: Failed to build"
-
-    cmake --install ./bld
-    exitOnError "test-conan: Failed to install"
-
-    pymembus uninstall
-    exitOnError "test-conan: Failed to uninstall"
-
-    # --- Install with deb file
-
-    # conan package .
-    # exitOnError "test-conan: Failed to create package"
-
-    # sudo apt install ./pck/pymembus-0.1.0-Linux.deb
-    # exitOnError "test-conan: Failed to install deb package"
-
-    # pymembus test
-    # exitOnError "test-conan: Failed to test"
-
-    # apt remove pymembus
-    # exitOnError "test-cmake: Failed to uninstall"
-
-fi
-
-#--------------------------------------------------------------------------------------------------
-if [[ $1 == "test-gradle" ]]; then
-
-    showBanner "Gradle Test"
-
-    apt-get -yqq update
-    # apt-get -yqq install gradle
-
-    if [ ! -z $(which gradle) ]; then
-        $GRADLEVER=$(gradle --version)
-        echo "$GRADLEVER"
-    fi
-    if compareVersion "$GRADLEVER" "6.3" "<"; then
-
-        GRADLEVER="6.8"
-
-        showInfo "Installing gradle ${GRADLEVER}..."
-
-        apt-get remove gradle
-        apt-get -yqq install default-jdk
-
-        TMPDIR=$(mktemp -d -t gradle-XXXXXXXXXX)
-        cd "$TMPDIR"
-        exitOnError "Faile to create temp directory : $TMPDIR"
-
-        wget -q "https://services.gradle.org/distributions/gradle-${GRADLEVER}-bin.zip" -P "$TMPDIR"
-        exitOnError "Failed to download gradle version ${GRADLEVER}"
-
-        unzip -q -d "/opt/gradle" "$TMPDIR/gradle-${GRADLEVER}-bin.zip"
-        exitOnError "Failed to extract gradle version ${GRADLEVER}"
-
-        if [ ! -f "/opt/gradle/gradle-${GRADLEVER}/bin/gradle" ]; then
-            exitWithError "Failed to install gradle"
-        fi
-
-        export GRADLE_HOME="/opt/gradle/gradle-${GRADLEVER}"
-        export PATH="${GRADLE_HOME}/bin:${PATH}"
-
-        rm -Rf "$TMPDIR"
-
-    fi
-
-    cp -R /code/pymembus /code/pymembus-gradle
-    exitOnError "test-gradle: Failed to copy to directory : /code/pymembus-gradle"
-
-    cd /code/pymembus-gradle
-    exitOnError "test-gradle: Failed to switch to directory : /code/pymembus-gradle"
-
-    ./clean.sh
-
-    ./add.sh gradle -y
-    exitOnError "test-gradle: Failed to add gradle to project"
-
-    gradle build
-    exitOnError "test-gradle: Failed to build"
-
-fi
-
-
-#--------------------------------------------------------------------------------------------------
 if [[ $1 == "test-pip" ]]; then
 
     showBanner "pip Test"
@@ -231,8 +121,8 @@ if [[ $1 == "test-pip" ]]; then
 
     ./clean.sh
 
-    ./add.sh pip -y
-    exitOnError "test-pip: Failed to add pip to project"
+    # ./add.sh pip -y
+    # exitOnError "test-pip: Failed to add pip to project"
 
     pip3 install .
     exitOnError "test-pip: Failed to install pip module"
@@ -246,47 +136,6 @@ if [[ $1 == "test-pip" ]]; then
 
     pip3 uninstall -y pymembus
     exitOnError "test-pip: Failed to uninstall"
-
-fi
-
-#--------------------------------------------------------------------------------------------------
-if [[ $1 == "test-npm" ]]; then
-
-    showBanner "npm Test"
-
-    apt-get -yqq update
-    apt-get -yqq install git nodejs npm
-    exitOnError "test-npm: Failed to install dependencies"
-
-    cp -R /code/pymembus /code/pymembus-npm
-    exitOnError "test-npm: Failed to copy to directory : /code/pymembus-npm"
-
-    cd /code/pymembus-npm
-    exitOnError "test-npm: Failed to switch to directory : /code/pymembus-npm"
-
-    ./clean.sh
-
-    ./add.sh npm -y
-    exitOnError "test-npm: Failed to add npm to project"
-
-    cmake . -B ./bld
-    exitOnError "test-npm: Failed to configure"
-
-    cmake --build ./bld
-    exitOnError "test-npm: Failed to build"
-
-    npm link
-    exitOnError "test-npm: Failed to install npm module"
-
-    npm -g list
-
-    export NODE_PATH=/usr/local/lib/node_modules
-
-    node ./src/node-test/js/test.js
-    exitOnError "test-npm: Failed to pass test"
-
-    npm -g rm pymembus
-    exitOnError "test-npm: Failed to uninstall"
 
 fi
 

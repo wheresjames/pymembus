@@ -63,11 +63,11 @@ rmDirs "package"
 # skbuild
 #--------------------------------------------------------------------------------------------------
 
-rmDirs "_skbuild dist pymembus.egg-info"
+rmDirs "_skbuild dist pymembus.egg-info src/pymembus.egg-info"
 
 #--------------------------------------------------------------------------------------------------
 # npm
 #--------------------------------------------------------------------------------------------------
 
 rmDirs "bin"
-rmFiles "package-lock.json"
+rmFiles "package-lock.json MANIFEST.in"

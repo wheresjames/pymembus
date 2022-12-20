@@ -6,10 +6,13 @@
 # Run
 # $ docker run -it pymembus-test
 #
+# Cleanup docker
+# $ docker system prune -f
+#
 #====================================================================
 
-FROM ubuntu:20.04 AS pymembus
-# FROM debian:10 AS pymembus
+# FROM ubuntu:20.04 AS pymembus
+FROM debian:11 AS pymembus
 
 # Set timezone
 ARG TZ="Europe/Berlin"
@@ -23,7 +26,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Install Build Dependencies
 RUN \
        apt-get -yq update \
-    && apt-get -yq install wget build-essential nano git cmake doxygen graphviz go-md2man ronn
+    && apt-get -yq install wget build-essential libboost-all-dev \
+                           nano git cmake doxygen graphviz \
+                           go-md2man ronn
 
 # Install a web browser to view help file (pymembus help)
 # RUN apt-get -yq install lynx
@@ -38,27 +43,15 @@ ENV DOCKERSCRIPT /code/pymembus/prv/test/docker.sh
 
 #--------------------------------------------------------------------
 # Ensure we have a minimum cmake version
-RUN ${DOCKERSCRIPT} check-cmake "3.15" "3.20"
+RUN ${DOCKERSCRIPT} check-cmake "3.15" "release"
 
 #--------------------------------------------------------------------
 # CMake build
 RUN ${DOCKERSCRIPT} test-cmake
 
 #--------------------------------------------------------------------
-# Conan build
-RUN ${DOCKERSCRIPT} test-conan
-
-#--------------------------------------------------------------------
-# Gradle build
-RUN ${DOCKERSCRIPT} test-gradle
-
-#--------------------------------------------------------------------
 # pip build
 RUN ${DOCKERSCRIPT} test-pip
-
-#--------------------------------------------------------------------
-# npm build
-RUN ${DOCKERSCRIPT} test-npm
 
 
 CMD /bin/bash

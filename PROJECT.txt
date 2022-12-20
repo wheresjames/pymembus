@@ -1,5 +1,5 @@
 name            pymembus
-version         0.1.3
+version         0.1.6
 description     Python shared memory library
 company         wheresjames
 author          Robert Umbehant
