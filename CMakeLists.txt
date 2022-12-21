@@ -61,6 +61,7 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 if(UNIX)
     set(BUILD_SHARED_LIBS ON)
+    execute_process(COMMAND "whoami" OUTPUT_VARIABLE EXEC_USER_NAME OUTPUT_STRIP_TRAILING_WHITESPACE)
 endif()
 
 
@@ -174,11 +175,12 @@ dump_cmake_variables("^APP")
 message(STATUS "-------------------------------------------------------------------------")
 message(STATUS "${APPNAME} - ${APPVER} (${APPBUILD})")
 message(STATUS "-------------------------------------------------------------------------")
-message(STATUS "CMAKE_INSTALL_PREFIX     : ${CMAKE_INSTALL_PREFIX}")
-message(STATUS "CMAKE_SOURCE_DIR         : ${CMAKE_SOURCE_DIR}")
-message(STATUS "CMAKE_BINARY_DIR         : ${CMAKE_BINARY_DIR}")
-message(STATUS "CMAKE_CURRENT_SOURCE_DIR : ${CMAKE_CURRENT_SOURCE_DIR}")
-message(STATUS "CMAKE_CURRENT_BINARY_DIR : ${CMAKE_CURRENT_BINARY_DIR}")
+message(STATUS "EXEC_USER_NAME              : ${EXEC_USER_NAME}")
+message(STATUS "CMAKE_INSTALL_PREFIX        : ${CMAKE_INSTALL_PREFIX}")
+message(STATUS "CMAKE_SOURCE_DIR            : ${CMAKE_SOURCE_DIR}")
+message(STATUS "CMAKE_BINARY_DIR            : ${CMAKE_BINARY_DIR}")
+message(STATUS "CMAKE_CURRENT_SOURCE_DIR    : ${CMAKE_CURRENT_SOURCE_DIR}")
+message(STATUS "CMAKE_CURRENT_BINARY_DIR    : ${CMAKE_CURRENT_BINARY_DIR}")
 if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/.git")
     execute_process(COMMAND git describe --tags --abbrev=0 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} OUTPUT_VARIABLE GIT_LASTTAG)
     string(STRIP "${GIT_LASTTAG}" GIT_LASTTAG)
@@ -224,10 +226,10 @@ endif()
 # man page
 if(UNIX AND NOT APPLE)
 
-    # Check for md2man (md2man-roff ./README.md > README.1)
-    if (EXISTS /usr/local/bin/md2man-roff)
+    # Check for md2man (go-md2man -in=./README.md -out=README.1)
+    if (EXISTS /usr/bin/go-md2man)
         message(STATUS "Generating man page with md2man")
-        add_custom_target(${APPNAME}-man ALL /usr/local/bin/md2man-roff "${CMAKE_CURRENT_SOURCE_DIR}/README.md" > "${CMAKE_CURRENT_BINARY_DIR}/pymembus.1"
+        add_custom_target(${APPNAME}-man ALL /usr/bin/go-md2man -in="${CMAKE_CURRENT_SOURCE_DIR}/README.md" -out="${CMAKE_CURRENT_BINARY_DIR}/pymembus.1"
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
         install(FILES "${CMAKE_CURRENT_BINARY_DIR}/pymembus.1" DESTINATION man/man1)
 
@@ -244,6 +246,9 @@ if(UNIX AND NOT APPLE)
         add_custom_target(${APPNAME}-man ALL /usr/bin/pandoc "${CMAKE_CURRENT_SOURCE_DIR}/prv/install/README.md" -f markdown -t man -o "${CMAKE_CURRENT_BINARY_DIR}/pymembus.1"
                         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
         install(FILES "${CMAKE_CURRENT_BINARY_DIR}/pymembus.1" DESTINATION man/man1)
+
+    else()
+        message(STATUS "No man page generators found")
 
     endif()
 endif()

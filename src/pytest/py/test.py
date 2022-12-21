@@ -134,6 +134,8 @@ def runTests(_p):
 
     #----------------------------------------------------------------
     # Huge write test
+    print("Huge write test")
+
     for b in range(0, 128):
 
         assert tx.open("/mymsg", 64 + b, True, True)
@@ -168,6 +170,8 @@ def runTests(_p):
 
     #----------------------------------------------------------------
     # Shared image
+    print("Shared image test")
+
     imgs = pymembus.memvid()
 
     # Make sure getBuf() on invalid object throws
@@ -224,7 +228,9 @@ def runTests(_p):
 
 
     #----------------------------------------------------------------
-    # Shared image
+    # Shared audio
+    print("Shared audio test")
+
     auds = pymembus.memaud()
 
     ch = 2

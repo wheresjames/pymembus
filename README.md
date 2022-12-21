@@ -43,7 +43,7 @@
     $ python3 -m pip install scikit-build
 
 
-### Build / Install
+### Local Build / Install
 
     $ python3 -m pip install .
 
