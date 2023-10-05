@@ -77,6 +77,12 @@ string(STRIP ${CMAKE_MATCH_1} APPNAME)
 string(REGEX MATCH "[\n]version[ \t]*([^\n]*)" _ ${CFGSTR})
 string(STRIP ${CMAKE_MATCH_1} APPVER)
 
+string(REGEX MATCH "([^.]*)" _ ${APPVER})
+string(STRIP ${CMAKE_MATCH_1} APPMAJ)
+
+string(REGEX MATCH "[^.]*\.([^.]*)" _ ${APPVER})
+string(STRIP ${CMAKE_MATCH_1} APPMIN)
+
 string(REGEX MATCH "[\n]description[ \t]*([^\n]*)" _ ${CFGSTR})
 string(STRIP ${CMAKE_MATCH_1} APPDESC)
 
